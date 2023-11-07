@@ -32,24 +32,6 @@ public class DriveJoystick extends CommandBase{
             controller.getRightX() * deadzoneScalarRightX);
     }
 
-    /**
-     * calculates strafe from joystick inputs:
-     * 
-     * intended behavior: lower of the two sideways joysticks is used, so
-     * both must be moved the same way to strafe
-     * 
-     */
-    private double getStrafe() {
-
-        if (Math.signum(controller.getLeftX()) == Math.signum(controller.getRightX())) {
-            return controller.getLeftX() > 0
-                    ? Math.min(controller.getLeftX(), controller.getRightX())
-                    : Math.max(controller.getLeftX(), controller.getRightX());
-        } else {
-            return 0;
-        }
-
-    }
 
     @Override
     public void end(boolean interrupted) {
