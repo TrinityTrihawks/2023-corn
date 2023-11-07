@@ -11,17 +11,15 @@ public class DriveJoystick extends CommandBase{
 
     public DriveJoystick(Drivetrain drive, CommandXboxController controller) {
         this.drive = drive;
-        this.controller = controller;
-        // Use addRequirements() here to declare subsystem dependencies.
+        this.controller = controller;  
+
         addRequirements(this.drive);
     }
 
-    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         
@@ -53,12 +51,10 @@ public class DriveJoystick extends CommandBase{
 
     }
 
-    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
     }
 
-    // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         return false;
