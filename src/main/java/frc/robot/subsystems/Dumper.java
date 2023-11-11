@@ -11,16 +11,16 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DumpConstants;
 
 public class Dumper extends SubsystemBase {
 
     private static Dumper instance;
 
-    private CANSparkMax armMotor = new CANSparkMax(DriveConstants.kDumpMotorId, MotorType.kBrushless);
+    private CANSparkMax armMotor = new CANSparkMax(DumpConstants.kDumpMotorId, MotorType.kBrushless);
     private RelativeEncoder beforeChainEnc = armMotor.getEncoder();
 
-    private SlewRateLimiter armLimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
+    private SlewRateLimiter armLimiter = new SlewRateLimiter(DumpConstants.kSlewValue);
 
     private Dumper() {
     }

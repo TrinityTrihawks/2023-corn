@@ -34,9 +34,9 @@ public class RobotContainer {
         subsystemController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-0.3), dumpyDumper));
         subsystemController.b().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
         
-        subsystemController.x().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.1), dumpyDumper));
+        subsystemController.x().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.6), dumpyDumper));
         subsystemController.x().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
-        subsystemController.y().whileTrue(new InstantCommand(() -> dumpyDumper.move(-0.1), dumpyDumper));
+        subsystemController.y().whileTrue(new InstantCommand(() -> dumpyDumper.move(-0.6), dumpyDumper));
         subsystemController.y().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
     }
 
