@@ -9,6 +9,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -18,6 +19,8 @@ public class Dumper extends SubsystemBase {
 
     private CANSparkMax armMotor = new CANSparkMax(DriveConstants.kDumpMotorId, MotorType.kBrushless);
     private RelativeEncoder beforeChainEnc = armMotor.getEncoder();
+
+    private SlewRateLimiter armLimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
 
     private Dumper() {
     }
@@ -32,7 +35,7 @@ public class Dumper extends SubsystemBase {
      */
     public void move(double percentOutput) {
 
-        armMotor.set(percentOutput);
+        armMotor.set(armLimiter.calculate(percentOutput));
     }
 
     @Override
