@@ -15,6 +15,8 @@ public class RobotContainer {
   private final Drivetrain drive = Drivetrain.getInstance();
   private final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController subsysController = new CommandXboxController(
+      OperatorConstants.kSubsystemControllerPort);
 
   public RobotContainer() {
     configureBindings();
