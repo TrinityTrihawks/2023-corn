@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -15,6 +17,7 @@ public class Dumper extends SubsystemBase {
     private static Dumper instance;
 
     private CANSparkMax armMotor = new CANSparkMax(DriveConstants.kDumpMotorId, MotorType.kBrushless);
+    private RelativeEncoder beforeChainEnc = armMotor.getEncoder();
 
     private Dumper() {
     }
@@ -34,6 +37,6 @@ public class Dumper extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+        SmartDashboard.putNumber("Arm Motor (before gears) enc val", beforeChainEnc.getPosition());
     }
 }
