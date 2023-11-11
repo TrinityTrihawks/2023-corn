@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -15,6 +16,8 @@ public class Dumper extends SubsystemBase {
     private static Dumper instance;
 
     private CANSparkMax armMotor = new CANSparkMax(DriveConstants.kDumpMotorId, MotorType.kBrushless);
+
+    private SlewRateLimiter armLimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
 
     private Dumper() {
     }
@@ -29,7 +32,7 @@ public class Dumper extends SubsystemBase {
      */
     public void move(double percentOutput) {
 
-        armMotor.set(percentOutput);
+        armMotor.set(armLimiter.calculate(percentOutput));
     }
 
     @Override
