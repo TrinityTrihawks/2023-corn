@@ -13,6 +13,7 @@ public class Constants {
         public static final int kBackLeftMotorId = 14;
         public static final int kFrontRightMotorId = 13;
         public static final int kBackRightMotorId = 12;
+        public static final int kDumpMotorId = 15;
         public static final double kSlewValue = 1.0/ (1.0/2.0); // rate limit, ie bigger, less slew ie = 1/ time to max
         public static double kStaticThrottleScalar = .3;
     
