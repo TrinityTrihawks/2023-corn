@@ -14,9 +14,11 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dumper;
 
 public class RobotContainer {
-  private final Drivetrain drive = Drivetrain.getInstance();
-  private final CommandXboxController driverController = new CommandXboxController(
-			OperatorConstants.kDriverControllerPort);
+    private final Drivetrain drive = Drivetrain.getInstance();
+    private final Dumper dumpyDumper = Dumper.getInstance();
+
+    private final CommandXboxController driverController = new CommandXboxController(
+            OperatorConstants.kDriverControllerPort);
   private final CommandXboxController subsysController = new CommandXboxController(
       OperatorConstants.kSubsystemControllerPort);
 
@@ -26,11 +28,11 @@ public class RobotContainer {
 
     private void configureBindings() {
         drive.setDefaultCommand(new DriveJoystick(drive, driverController));
-        
-        driverController.a().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.2), dumpyDumper));
-        driverController.a().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
-        driverController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-.2), dumpyDumper));
-        driverController.b().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
+
+        subsysController.a().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.2), dumpyDumper));
+        subsysController.a().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
+        subsysController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-.2), dumpyDumper));
+        subsysController.b().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
 
     }
 
