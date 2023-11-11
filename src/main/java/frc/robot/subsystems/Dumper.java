@@ -5,20 +5,31 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
 
 public class Dumper extends SubsystemBase {
 
-    private Dumper instance;
+    private static Dumper instance;
 
-    private CANSparkMax armMotor = new CANSparkMax(0, null);
+    private CANSparkMax armMotor = new CANSparkMax(DriveConstants.kDumpMotorId, MotorType.kBrushless);
 
     private Dumper() {
     }
 
-    public Dumper getInstance() {
+    public static Dumper getInstance() {
         return instance == null? instance = new Dumper() : instance;
+    }
+
+    /**
+     * bottom line arm movement. input on [-1, 1].
+     * 
+     */
+    public void move(double percentOutput) {
+
+        armMotor.set(percentOutput);
     }
 
     @Override
