@@ -19,8 +19,8 @@ public class RobotContainer {
 
     private final CommandXboxController driverController = new CommandXboxController(
             OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController subsysController = new CommandXboxController(
-      OperatorConstants.kSubsystemControllerPort);
+    private final CommandXboxController subsystemController = new CommandXboxController(
+            OperatorConstants.kSubsystemControllerPort);
 
     public RobotContainer() {
         configureBindings();
@@ -29,10 +29,10 @@ public class RobotContainer {
     private void configureBindings() {
         drive.setDefaultCommand(new DriveJoystick(drive, driverController));
 
-        subsysController.a().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.2), dumpyDumper));
-        subsysController.a().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
-        subsysController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-.2), dumpyDumper));
-        subsysController.b().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
+        subsystemController.a().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.2), dumpyDumper));
+        subsystemController.a().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
+        subsystemController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-.2), dumpyDumper));
+        subsystemController.b().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
 
     }
 
