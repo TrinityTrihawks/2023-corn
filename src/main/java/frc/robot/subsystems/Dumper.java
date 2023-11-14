@@ -23,6 +23,7 @@ public class Dumper extends SubsystemBase {
     private SlewRateLimiter armLimiter = new SlewRateLimiter(DumpConstants.kSlewValue);
 
     private Dumper() {
+        beforeChainEnc.setPosition(0);
     }
 
     public static Dumper getInstance() {
@@ -34,12 +35,14 @@ public class Dumper extends SubsystemBase {
      * 
      */
     public void move(double percentOutput) {
-
+       
         armMotor.set(armLimiter.calculate(percentOutput));
+        
     }
 
     @Override
     public void periodic() {
+        
         SmartDashboard.putNumber("Arm Motor (before gears) enc val", beforeChainEnc.getPosition());
     }
 }
