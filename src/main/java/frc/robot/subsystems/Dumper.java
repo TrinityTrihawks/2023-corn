@@ -35,11 +35,17 @@ public class Dumper extends SubsystemBase {
      * 
      */
     public void move(double percentOutput) {
-       
+        //needs the new encoder working
+        if (percentOutput < 0){
+       if (beforeChainEnc.getPosition() > 1){
         armMotor.set(armLimiter.calculate(percentOutput));
-        
+        }
+    }else{
+    if (beforeChainEnc.getPosition() < 139){
+        armMotor.set(armLimiter.calculate(percentOutput));   
+        }
     }
-
+ }
     @Override
     public void periodic() {
         
