@@ -29,14 +29,14 @@ public class RobotContainer {
     private void configureBindings() {
         drive.setDefaultCommand(new DriveJoystick(drive, driverController));
 
-        subsystemController.a().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.3), dumpyDumper));
+        subsystemController.a().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.5), dumpyDumper));
         subsystemController.a().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
-        subsystemController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-0.3), dumpyDumper));
+        subsystemController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-0.5), dumpyDumper));
         subsystemController.b().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
         
-        subsystemController.x().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.6), dumpyDumper));
+        subsystemController.x().whileTrue(new InstantCommand(() -> dumpyDumper.move(1), dumpyDumper));
         subsystemController.x().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
-        subsystemController.y().whileTrue(new InstantCommand(() -> dumpyDumper.move(-0.6), dumpyDumper));
+        subsystemController.y().whileTrue(new InstantCommand(() -> dumpyDumper.move(-1), dumpyDumper));
         subsystemController.y().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
     }
 
