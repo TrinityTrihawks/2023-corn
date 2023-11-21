@@ -23,5 +23,6 @@ public class Constants {
         
         public static final double kSlewValue = 4;
         public static final int kDumpMotorId = 15;
+        public static final int kAltEncCPR = 8192;
     }
 }
