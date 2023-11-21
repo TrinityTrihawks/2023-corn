@@ -50,10 +50,15 @@ public class Dumper extends SubsystemBase {
         // }
     }
 
+    public void stop() {
+        armMotor.stopMotor();
+    }
+
     @Override
     public void periodic() {
 
         SmartDashboard.putNumber("Arm Motor (before gears) enc val", beforeChainEnc.getPosition());
         SmartDashboard.putNumber("Arm Axle (after gears) enc val", afterChainEnc.getPosition());
     }
+
 }
