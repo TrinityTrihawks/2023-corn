@@ -6,9 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.BasicDumperTeleop;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dumper;
@@ -27,17 +27,10 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        drive.setDefaultCommand(new DriveJoystick(drive, driverController));
 
-        subsystemController.a().whileTrue(new InstantCommand(() -> dumpyDumper.move(0.5), dumpyDumper));
-        subsystemController.a().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
-        subsystemController.b().whileTrue(new InstantCommand(() -> dumpyDumper.move(-0.5), dumpyDumper));
-        subsystemController.b().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
+        drive.setDefaultCommand(new DriveJoystick(drive, driverController));
+        dumpyDumper.setDefaultCommand(new BasicDumperTeleop(dumpyDumper, subsystemController, .5));
         
-        subsystemController.x().whileTrue(new InstantCommand(() -> dumpyDumper.move(1), dumpyDumper));
-        subsystemController.x().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
-        subsystemController.y().whileTrue(new InstantCommand(() -> dumpyDumper.move(-1), dumpyDumper));
-        subsystemController.y().whileFalse(new InstantCommand(() -> dumpyDumper.move(0), dumpyDumper));
     }
 
     public Command getAutonomousCommand() {

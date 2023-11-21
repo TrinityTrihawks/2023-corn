@@ -38,8 +38,13 @@ public class Dumper extends SubsystemBase {
         armMotor.set(armLimiter.calculate(percentOutput));
     }
 
+    public void stop() {
+        armMotor.stopMotor();
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Arm Motor (before gears) enc val", beforeChainEnc.getPosition());
     }
+
 }
