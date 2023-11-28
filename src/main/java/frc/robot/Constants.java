@@ -24,5 +24,9 @@ public class Constants {
         public static final double kSlewValue = 4;
         public static final int kDumpMotorId = 15;
         public static final int kAltEncCPR = 8192;
+        public static final int kMinArmPos = 0;
+        public static final int kMaxArmPos = 120;
+        public static final double kArmDeadZone = 3;
+
     }
 }

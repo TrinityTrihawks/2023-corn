@@ -50,8 +50,113 @@ public class Dumper extends SubsystemBase {
         // }
     }
 
+    public void moveTo(double targetDegrees) {
+
+        if (targetDegrees < DumpConstants.kMinArmPos || targetDegrees > DumpConstants.kMaxArmPos) {
+
+            System.err.println(
+                "HOW DARE YOU COMMAND AND OUTPUT (" + targetDegrees + 
+                ") OUTSIDE OF THE RoM (" + DumpConstants.kMinArmPos + " : " + DumpConstants.kMaxArmPos + ")!?\n\t-- The Code Genii");
+
+
+            stop();
+            return;
+        }
+
+        double curAngle = afterChainEnc.getPosition();
+
+        if (Math.abs(curAngle - targetDegrees) < DumpConstants.kArmDeadZone) {
+
+            move(powerHoldAt(targetDegrees));
+
+        } else if (curAngle - targetDegrees > 0) {
+
+            move(powerReverseAt(curAngle));
+
+        } else {
+
+            move(powerAheadAt(curAngle));
+        }
+    }
+
+    private double powerAheadAt(double degrees) {
+
+        double retVal = 0;
+
+        if (degrees < 0) {
+
+            retVal = 0;
+            stop();
+
+        } else if (degrees < 35) {
+            retVal = .6;
+        } else if (degrees < 70) {
+            retVal = .4;
+        } else if (degrees < 95) {
+            retVal = .3;
+        } else if (degrees < 120) {
+            retVal = .1;
+        } else {
+            retVal = powerHoldAt(120);
+        }
+
+        return retVal;
+    }
+
+    private double powerReverseAt(double degrees) {
+
+        double retVal = 0;
+
+        if (degrees < 0) {
+
+            retVal = 0;
+            stop();
+
+        } else if (degrees < 35) {
+            retVal = .1;
+        } else if (degrees < 70) {
+            retVal = .2;
+        } else if (degrees < 95) {
+            retVal = .3;
+        } else if (degrees < 120) {
+            retVal = .4;
+        } else {
+            retVal = .6;
+        }
+
+        return -retVal;
+    }
+
+    private double powerHoldAt(double degrees) {
+
+        double retVal = 0;
+
+        if (degrees < 0) {
+
+            retVal = 0;
+            stop();
+
+        } else if (degrees < 20) {
+            retVal = .15;
+        } else if (degrees < 70) {
+            retVal = .1;
+        } else if (degrees < 95) {
+            retVal = 0;
+        } else if (degrees < 120) {
+            retVal = -.1;
+        } else {
+            retVal = -.15;
+        }
+
+        return retVal;
+    }
+
     public void stop() {
         armMotor.stopMotor();
+    }
+
+    public double getArmAngle() {
+        return afterChainEnc.getPosition();
     }
 
     @Override
@@ -60,5 +165,6 @@ public class Dumper extends SubsystemBase {
         SmartDashboard.putNumber("Arm Motor (before gears) enc val", beforeChainEnc.getPosition());
         SmartDashboard.putNumber("Arm Axle (after gears) enc val", afterChainEnc.getPosition());
     }
+
 
 }
