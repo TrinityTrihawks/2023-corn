@@ -6,25 +6,37 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmToTarget;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Dumper;
 
 public class RobotContainer {
-  private final Drivetrain drive = Drivetrain.getInstance();
-  private final CommandXboxController driverController = new CommandXboxController(
-			OperatorConstants.kDriverControllerPort);
+    private final Drivetrain drive = Drivetrain.getInstance();
+    private final Dumper dumpyDumper = Dumper.getInstance();
 
-  public RobotContainer() {
-    configureBindings();
-  }
+    private final CommandXboxController driverController = new CommandXboxController(
+            OperatorConstants.kDriverControllerPort);
+    private final CommandXboxController subsystemController = new CommandXboxController(
+            OperatorConstants.kSubsystemControllerPort);
 
-  private void configureBindings() {
-    drive.setDefaultCommand(new DriveJoystick(drive, driverController));
-  }
+    public RobotContainer() {
+        configureBindings();
+    }
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+    private void configureBindings() {
+
+        drive.setDefaultCommand(new DriveJoystick(drive, driverController));
+        ArmToTarget def = new ArmToTarget(dumpyDumper);
+        dumpyDumper.setDefaultCommand(def);
+        subsystemController.a().onTrue(new InstantCommand(() -> def.setTarget(120)));
+        subsystemController.b().onTrue(new InstantCommand(() -> def.setTarget(0)));
+    }
+
+    public Command getAutonomousCommand() {
+        return Commands.print("No auton configured. :(\n\t-- The Code Genii");
+    }
 }
