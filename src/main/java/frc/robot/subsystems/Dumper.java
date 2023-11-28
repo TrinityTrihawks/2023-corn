@@ -63,7 +63,7 @@ public class Dumper extends SubsystemBase {
             return;
         }
 
-        double curAngle = afterChainEnc.getPosition();
+        double curAngle = getArmAngle();
 
         if (Math.abs(curAngle - targetDegrees) < DumpConstants.kArmDeadZone) {
 
@@ -163,7 +163,7 @@ public class Dumper extends SubsystemBase {
     public void periodic() {
 
         SmartDashboard.putNumber("Arm Motor (before gears) enc val", beforeChainEnc.getPosition());
-        SmartDashboard.putNumber("Arm Axle (after gears) enc val", afterChainEnc.getPosition());
+        SmartDashboard.putNumber("Arm Axle (after gears) enc val", getArmAngle());
     }
 
 
