@@ -26,7 +26,7 @@ public class Constants {
         public static final int kAltEncCPR = 8192;
         public static final int kMinArmPos = 0;
         public static final int kMaxArmPos = 120;
-        public static final double kArmDeadZone = 3;
+        public static final double kArmDeadZone = 10;
 
     }
 }

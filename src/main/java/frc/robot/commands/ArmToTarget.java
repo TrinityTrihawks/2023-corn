@@ -4,31 +4,33 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Dumper;
 
-public class ArmToSmartDash extends CommandBase {
+public class ArmToTarget extends CommandBase {
 
     private Dumper dumper;
+    private double target = 0;
 
-    public ArmToSmartDash(Dumper dumper) {
+    public ArmToTarget(Dumper dumper) {
         this.dumper = dumper;
         addRequirements(this.dumper);
+    }
+
+    public void setTarget(double t) {
+        target = t;
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        SmartDashboard.putNumber("Arm Target", 0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double inval = SmartDashboard.getNumber("Arm Target", dumper.getArmAngle());
-        dumper.moveTo(inval);
-        SmartDashboard.putNumber("echo set val", inval);
+        
+        dumper.moveTo(target);
     }
 
     // Called once the command ends or is interrupted.

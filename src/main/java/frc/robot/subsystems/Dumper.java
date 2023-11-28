@@ -20,9 +20,12 @@ public class Dumper extends SubsystemBase {
 
     private CANSparkMax armMotor = new CANSparkMax(DumpConstants.kDumpMotorId, MotorType.kBrushless);
     private RelativeEncoder beforeChainEnc = armMotor.getEncoder();
-    private RelativeEncoder afterChainEnc = armMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, DumpConstants.kAltEncCPR);
+    private RelativeEncoder afterChainEnc = armMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature,
+            DumpConstants.kAltEncCPR);
 
     private SlewRateLimiter armLimiter = new SlewRateLimiter(DumpConstants.kSlewValue);
+
+    private boolean inTheDeadzone = false;
 
     private Dumper() {
         beforeChainEnc.setPosition(0);
@@ -38,16 +41,9 @@ public class Dumper extends SubsystemBase {
      * 
      */
     public void move(double percentOutput) {
-        // needs the new encoder working
-        // if (percentOutput < 0) {
-        //     if (beforeChainEnc.getPosition() > 1) {
-                armMotor.set(armLimiter.calculate(percentOutput));
-        //     }
-        // } else {
-        //     if (beforeChainEnc.getPosition() < 139) {
-        //         armMotor.set(armLimiter.calculate(percentOutput));
-        //     }
-        // }
+
+        armMotor.set(armLimiter.calculate(percentOutput));
+
     }
 
     public void moveTo(double targetDegrees) {
@@ -55,9 +51,9 @@ public class Dumper extends SubsystemBase {
         if (targetDegrees < DumpConstants.kMinArmPos || targetDegrees > DumpConstants.kMaxArmPos) {
 
             System.err.println(
-                "HOW DARE YOU COMMAND AND OUTPUT (" + targetDegrees + 
-                ") OUTSIDE OF THE RoM (" + DumpConstants.kMinArmPos + " : " + DumpConstants.kMaxArmPos + ")!?\n\t-- The Code Genii");
-
+                    "HOW DARE YOU COMMAND AND OUTPUT (" + targetDegrees +
+                            ") OUTSIDE OF THE RoM (" + DumpConstants.kMinArmPos + " : " + DumpConstants.kMaxArmPos
+                            + ")!?\n\t-- The Code Genii");
 
             stop();
             return;
@@ -67,14 +63,20 @@ public class Dumper extends SubsystemBase {
 
         if (Math.abs(curAngle - targetDegrees) < DumpConstants.kArmDeadZone) {
 
+            SmartDashboard.putString("Arm State", "In deadzone: " + curAngle);
+            inTheDeadzone = true;
             move(powerHoldAt(targetDegrees));
 
         } else if (curAngle - targetDegrees > 0) {
 
+            SmartDashboard.putString("Arm State", "<< Reverse: " + curAngle + "; pwr: " + powerReverseAt(curAngle));
+            inTheDeadzone = false;
             move(powerReverseAt(curAngle));
 
         } else {
 
+            SmartDashboard.putString("Arm State", ">> Ahead: " + curAngle + "; pwr: " + powerAheadAt(curAngle));
+            inTheDeadzone = false;
             move(powerAheadAt(curAngle));
         }
     }
@@ -83,24 +85,19 @@ public class Dumper extends SubsystemBase {
 
         double retVal = 0;
 
-        if (degrees < 0) {
-
-            retVal = 0;
-            stop();
-
-        } else if (degrees < 35) {
-            retVal = .6;
+        if (degrees < 35) {
+            retVal = 1;
         } else if (degrees < 70) {
-            retVal = .4;
+            retVal = .8;
         } else if (degrees < 95) {
-            retVal = .3;
+            retVal = .75;
         } else if (degrees < 120) {
-            retVal = .1;
+            retVal = .6;
         } else {
             retVal = powerHoldAt(120);
         }
 
-        return retVal;
+        return -retVal;
     }
 
     private double powerReverseAt(double degrees) {
@@ -113,18 +110,18 @@ public class Dumper extends SubsystemBase {
             stop();
 
         } else if (degrees < 35) {
-            retVal = .1;
-        } else if (degrees < 70) {
-            retVal = .2;
-        } else if (degrees < 95) {
             retVal = .3;
-        } else if (degrees < 120) {
+        } else if (degrees < 70) {
             retVal = .4;
+        } else if (degrees < 95) {
+            retVal = .5;
+        } else if (degrees < 120) {
+            retVal = .7;
         } else {
-            retVal = .6;
+            retVal = 1;
         }
 
-        return -retVal;
+        return retVal;
     }
 
     private double powerHoldAt(double degrees) {
@@ -148,7 +145,7 @@ public class Dumper extends SubsystemBase {
             retVal = -.15;
         }
 
-        return retVal;
+        return 0; // -retVal;
     }
 
     public void stop() {
@@ -156,7 +153,7 @@ public class Dumper extends SubsystemBase {
     }
 
     public double getArmAngle() {
-        return afterChainEnc.getPosition();
+        return -beforeChainEnc.getPosition();
     }
 
     @Override
@@ -166,5 +163,8 @@ public class Dumper extends SubsystemBase {
         SmartDashboard.putNumber("Arm Axle (after gears) enc val", getArmAngle());
     }
 
+    public boolean inDeadzone() {
+        return inTheDeadzone;
+    }
 
 }
