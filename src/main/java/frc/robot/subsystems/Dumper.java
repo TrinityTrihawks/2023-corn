@@ -65,7 +65,7 @@ public class Dumper extends SubsystemBase {
 
             SmartDashboard.putString("Arm State", "In deadzone: " + curAngle);
             inTheDeadzone = true;
-            move(powerHoldAt(targetDegrees));
+            stop();
 
         } else if (curAngle - targetDegrees > 0) {
 
@@ -94,7 +94,8 @@ public class Dumper extends SubsystemBase {
         } else if (degrees < 120) {
             retVal = .6;
         } else {
-            retVal = powerHoldAt(120);
+            retVal = 0;
+            stop();
         }
 
         return -retVal;
@@ -122,30 +123,6 @@ public class Dumper extends SubsystemBase {
         }
 
         return retVal;
-    }
-
-    private double powerHoldAt(double degrees) {
-
-        double retVal = 0;
-
-        if (degrees < 0) {
-
-            retVal = 0;
-            stop();
-
-        } else if (degrees < 20) {
-            retVal = .15;
-        } else if (degrees < 70) {
-            retVal = .1;
-        } else if (degrees < 95) {
-            retVal = 0;
-        } else if (degrees < 120) {
-            retVal = -.1;
-        } else {
-            retVal = -.15;
-        }
-
-        return 0; // -retVal;
     }
 
     public void stop() {
