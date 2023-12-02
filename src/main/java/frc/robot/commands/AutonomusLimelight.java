@@ -14,18 +14,16 @@ public class AutonomusLimelight extends CommandBase {
     private Dumper dumper;
     private Drivetrain drivetrain;
     private Timer timer;
+    private int phase = 1; // of the auton routine
 
     public AutonomusLimelight(Drivetrain drivetrain, Dumper dumper) {
         this.dumper = dumper;
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
-        addRequirements(dumper); 
+        addRequirements(dumper);
 
         timer = new Timer();
     }
-
-       
-   
 
     @Override
     public void initialize() {
@@ -51,53 +49,51 @@ public class AutonomusLimelight extends CommandBase {
         SmartDashboard.putNumber("LimelightArea", area);
         SmartDashboard.putNumber("id", id);
 
-
         double fwdSpeed = 0.5;
-        double rotSpeed = x / 150;
-        double angle = dumper.getArmAngle();
+        double rotSpeed = x / 150.0;
 
         SmartDashboard.putNumber("rotSpeed", rotSpeed);
         SmartDashboard.putNumber("fwdSpeed", fwdSpeed);
 
-        
-        int phase = 1; // of the auton routine
-
         if (phase == 1) {
-            if ((id != 4) && (id != 5)) {
+
+            if (timer.hasElapsed(5)) {
                 fwdSpeed = 0;
                 rotSpeed = 0;
+                phase = 2;
+
             }
-            if (area == 0) {
-                fwdSpeed = 0;
+
+            if ((x < 3) && (x > -3)) {
+
                 rotSpeed = 0;
-            } else {
-                if (timer.hasElapsed(3)) {
-                    fwdSpeed = 0;
-                    rotSpeed = 0;
-                    phase = 2;
-
-                }
-
-                if ((x < 3) && (x > -3)) {
-
-                    rotSpeed = 0;
-                }
-                drivetrain.drive(fwdSpeed, 0, rotSpeed);
             }
+            drivetrain.drive(fwdSpeed, 0, rotSpeed);
+
         } else if (phase == 2) {
-
+            drivetrain.drive(.3, 0, 0);
             dumper.moveTo(120);
-            if (angle == 120) {
+            if (dumper.inDeadzone()) {
                 phase = 3;
+                timer.restart();
             }
         } else if (phase == 3) {
+
             drivetrain.drive(0, 0, 0);
-            dumper.moveTo(0);
-            if (angle == 0) {
+            dumper.moveTo(120);
+
+            if (timer.hasElapsed(2)) {
                 phase = 4;
             }
         } else if (phase == 4) {
-           
+            drivetrain.drive(-.8, 0, 0);
+            dumper.moveTo(0);
+            if (dumper.inDeadzone()) {
+                phase = 5;
+            }
+        } else if (phase == 5) {
+
+            drivetrain.drive(0, 0, 0);
         }
     }
 
