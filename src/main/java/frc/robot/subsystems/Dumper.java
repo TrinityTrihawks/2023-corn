@@ -90,7 +90,7 @@ public class Dumper extends SubsystemBase {
         } else if (degrees < 70) {
             retVal = .8;
         } else if (degrees < 95) {
-            retVal = .75;
+            retVal = 1;
         } else if (degrees < 120) {
             retVal = .6;
         } else {
