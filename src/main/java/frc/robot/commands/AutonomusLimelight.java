@@ -72,7 +72,7 @@ public class AutonomusLimelight extends CommandBase {
 
         } else if (phase == 2) {
             drivetrain.drive(.3, 0, 0);
-            dumper.moveTo(120);
+            dumper.moveTo(140);
             if (dumper.inDeadzone()) {
                 phase = 3;
                 timer.restart();

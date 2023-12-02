@@ -39,8 +39,13 @@ public class BasicDumperTeleop extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        int runForwards = controller.a().getAsBoolean()? 1 : 0;
-        int runBackwards = controller.b().getAsBoolean()? -1 : 0;
+        int runForwards = controller.a().getAsBoolean()? -1 : 0;
+        int runBackwards = controller.b().getAsBoolean()? 1 : 0;
+        if (dumper.getArmAngle() < 20) {
+            runBackwards = 0;
+        } else if (dumper.getArmAngle() > 140) {
+            runForwards = 0;
+        }
         int direction = runBackwards + runForwards;
 
         dumper.move(direction * throttle);
