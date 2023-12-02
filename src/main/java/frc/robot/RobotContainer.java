@@ -38,7 +38,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return 
-            new RepeatCommand(new InstantCommand(() -> drive.drive(0, .5, 0), drive))
+            new RepeatCommand(new InstantCommand(() -> drive.drive(.7, 0, 0), drive))
             .withTimeout(2)
             .andThen(new RepeatCommand(new InstantCommand(() -> drive.drive(0, 0, 0), drive)));
     }
