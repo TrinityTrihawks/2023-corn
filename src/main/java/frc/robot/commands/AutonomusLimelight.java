@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -12,11 +13,15 @@ public class AutonomusLimelight extends CommandBase {
 
     private Dumper dumper;
     private Drivetrain drivetrain;
+    private Timer timer;
+
     public AutonomusLimelight(Drivetrain drivetrain, Dumper dumper) {
         this.dumper = dumper;
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
         addRequirements(dumper); 
+
+        timer = new Timer();
     }
 
        
@@ -24,6 +29,7 @@ public class AutonomusLimelight extends CommandBase {
 
     @Override
     public void initialize() {
+        timer.start();
     }
 
     @Override
@@ -46,7 +52,7 @@ public class AutonomusLimelight extends CommandBase {
         SmartDashboard.putNumber("id", id);
 
 
-        double fwdSpeed = (10 - area) / 21;
+        double fwdSpeed = 0.5;
         double rotSpeed = x / 150;
         double angle = dumper.getArmAngle();
 
@@ -65,7 +71,7 @@ public class AutonomusLimelight extends CommandBase {
                 fwdSpeed = 0;
                 rotSpeed = 0;
             } else {
-                if (area > 9.5) {
+                if (timer.hasElapsed(3)) {
                     fwdSpeed = 0;
                     rotSpeed = 0;
                     phase = 2;
@@ -85,7 +91,7 @@ public class AutonomusLimelight extends CommandBase {
                 phase = 3;
             }
         } else if (phase == 3) {
-            drivetrain.drive(-1, 0, 0);
+            drivetrain.drive(0, 0, 0);
             dumper.moveTo(0);
             if (angle == 0) {
                 phase = 4;
