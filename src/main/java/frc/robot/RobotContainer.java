@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmToTarget;
+import frc.robot.commands.AutonomusLimelight;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dumper;
@@ -37,9 +38,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return 
-            new RepeatCommand(new InstantCommand(() -> drive.drive(.7, 0, 0), drive))
-            .withTimeout(2)
-            .andThen(new RepeatCommand(new InstantCommand(() -> drive.drive(0, 0, 0), drive)));
+        return new AutonomusLimelight(drive, dumpyDumper);
     }
 }
