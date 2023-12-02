@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,8 +19,7 @@ public class Dumper extends SubsystemBase {
 
     private CANSparkMax armMotor = new CANSparkMax(DumpConstants.kDumpMotorId, MotorType.kBrushless);
     private RelativeEncoder beforeChainEnc = armMotor.getEncoder();
-    private RelativeEncoder afterChainEnc = armMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature,
-            DumpConstants.kAltEncCPR);
+    
 
     private SlewRateLimiter armLimiter = new SlewRateLimiter(DumpConstants.kSlewValue);
 
@@ -29,7 +27,6 @@ public class Dumper extends SubsystemBase {
 
     private Dumper() {
         beforeChainEnc.setPosition(0);
-        afterChainEnc.setPosition(0);
     }
 
     public static Dumper getInstance() {
@@ -117,9 +114,9 @@ public class Dumper extends SubsystemBase {
         } else if (degrees < 95) {
             retVal = .5;
         } else if (degrees < 120) {
-            retVal = .7;
+            retVal = .8;
         } else {
-            retVal = 1;
+            retVal = .6;
         }
 
         return retVal;
