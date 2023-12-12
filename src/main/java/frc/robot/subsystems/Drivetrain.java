@@ -9,15 +9,20 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
-public class Drivetrain extends SubsystemBase{
-    public static ADIS16470_IMU imu = new ADIS16470_IMU();
-    
-    private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
+public class Drivetrain extends SubsystemBase {
 
-    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax, rearRightSparkMax);
+    public static ADIS16470_IMU imu = new ADIS16470_IMU();
+
+    private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId,
+            MotorType.kBrushless);
+    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId,
+            MotorType.kBrushless);
+    private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId,
+            MotorType.kBrushless);
+
+    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,
+            rearRightSparkMax);
 
     private SlewRateLimiter ylimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
     private SlewRateLimiter xlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
@@ -37,9 +42,9 @@ public class Drivetrain extends SubsystemBase{
 
     public void drive(double x, double y, double theta) {
         mecanumDrive.driveCartesian(
-            xlimiter.calculate(x * DriveConstants.kStaticThrottleScalar), 
-            ylimiter.calculate(y * DriveConstants.kStaticThrottleScalar), 
-            zlimiter.calculate(theta * DriveConstants.kStaticThrottleScalar));
+                xlimiter.calculate(x * DriveConstants.kStaticThrottleScalar),
+                ylimiter.calculate(y * DriveConstants.kStaticThrottleScalar),
+                zlimiter.calculate(theta * DriveConstants.kStaticThrottleScalar));
 
     }
 
@@ -50,6 +55,6 @@ public class Drivetrain extends SubsystemBase{
 
     @Override
     public void simulationPeriodic() {
-    
+
     }
 }

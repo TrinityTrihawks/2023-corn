@@ -35,9 +35,6 @@ public class RobotContainer {
         dumpyDumper.setDefaultCommand(def);
         subsystemController.a().onTrue(new InstantCommand(() -> def.setTarget(120)));
         subsystemController.b().onTrue(new InstantCommand(() -> def.setTarget(0)));
-        subsystemController.y().onTrue(new InstantCommand(() -> {
-            //CommandScheduler.getInstance().schedule(backup);
-        }));
     }
 
     public Command getAutonomousCommand() {
