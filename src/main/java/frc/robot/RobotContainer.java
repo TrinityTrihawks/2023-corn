@@ -5,13 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmToTarget;
 import frc.robot.commands.AutonomusLimelight;
-import frc.robot.commands.BasicDumperTeleop;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dumper;
@@ -34,7 +32,6 @@ public class RobotContainer {
         drive.setDefaultCommand(new DriveJoystick(drive, driverController));
 
         ArmToTarget def = new ArmToTarget(dumpyDumper);
-        BasicDumperTeleop backup = new BasicDumperTeleop(dumpyDumper, subsystemController, 1);
         dumpyDumper.setDefaultCommand(def);
         subsystemController.a().onTrue(new InstantCommand(() -> def.setTarget(120)));
         subsystemController.b().onTrue(new InstantCommand(() -> def.setTarget(0)));
