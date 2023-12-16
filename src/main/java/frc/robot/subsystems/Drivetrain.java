@@ -15,13 +15,15 @@ public class Drivetrain extends SubsystemBase {
 
     private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId,
             MotorType.kBrushless);
-    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId,
+            MotorType.kBrushless);
     private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId,
             MotorType.kBrushless);
     private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId,
             MotorType.kBrushless);
 
-    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,
+    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax,
+            frontRightSparkMax,
             rearRightSparkMax);
 
     private SlewRateLimiter ylimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
@@ -56,5 +58,12 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void simulationPeriodic() {
 
+    }
+
+    public void stop() {
+        frontLeftSparkMax.stopMotor();
+        frontRightSparkMax.stopMotor();
+        rearLeftSparkMax.stopMotor();
+        rearRightSparkMax.stopMotor();
     }
 }
